@@ -25,12 +25,15 @@ import com.chiragawale.trail.ui.main.SectionsPagerAdapter;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+import io.realm.Realm;
+
+public class MainActivity extends BaseActivity {
     BluetoothLEHelper ble;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Realm.init(getApplicationContext());
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);

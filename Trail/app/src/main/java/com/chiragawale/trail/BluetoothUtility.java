@@ -3,7 +3,6 @@ package com.chiragawale.trail;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothProfile;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.chiragawale.trail.models.RealmEntry;
+import com.chiragawale.trail.utils.TimeUtils;
 import com.ederdoski.simpleble.interfaces.BleCallback;
 import com.ederdoski.simpleble.models.BluetoothLE;
 import com.ederdoski.simpleble.utils.BluetoothLEHelper;
@@ -24,9 +24,10 @@ import com.ederdoski.simpleble.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
-public class BluetoothUtility extends AppCompatActivity {
+import io.realm.Realm;
+
+public class BluetoothUtility extends BaseActivity {
 
     BluetoothLEHelper ble;
     AlertDialog dAlert;
@@ -35,6 +36,7 @@ public class BluetoothUtility extends AppCompatActivity {
     Button btnScan;
     Button btnWrite;
     Button btnRead;
+    Realm realm;
 
     private AlertDialog setDialogInfo(String title, String message, boolean btnVisible){
 
@@ -70,6 +72,13 @@ public class BluetoothUtility extends AppCompatActivity {
         if(ble.getListDevices().size() > 0){
             for (int i=0; i<ble.getListDevices().size(); i++) {
                 aBleAvailable.add(new BluetoothLE(ble.getListDevices().get(i).getName(), ble.getListDevices().get(i).getMacAddress(), ble.getListDevices().get(i).getRssi(), ble.getListDevices().get(i).getDevice()));
+                RealmEntry realmEntry = new RealmEntry();
+                realmEntry.setName(ble.getListDevices().get(i).getName());
+                realmEntry.setMacAddress(ble.getListDevices().get(i).getMacAddress());
+                realmEntry.setRssi(ble.getListDevices().get(i).getRssi());
+                realmEntry.setTime(TimeUtils.currentTimeStamp());
+                realmEntry.setLocation("N/A");
+                dao.addEntry(realmEntry);
             }
 
             ListAdapter mAdapter = new ListAdapter(this, R.layout.simple_row_list, aBleAvailable) {
@@ -78,7 +87,7 @@ public class BluetoothUtility extends AppCompatActivity {
 
                     TextView txtName = view.findViewById(R.id.txtText);
 
-                    String aux = ((BluetoothLE) item).getName() + "    " + ((BluetoothLE) item).getMacAddress();
+                    String aux = "Name " + ((BluetoothLE) item).getName() + " Mac: " + ((BluetoothLE) item).getMacAddress() + " Rssi: "+  ((BluetoothLE) item).getRssi()   ;
                     txtName.setText(aux);
 
                 }
@@ -209,7 +218,7 @@ public class BluetoothUtility extends AppCompatActivity {
         btnWrite = findViewById(R.id.writeBle);
 
         listenerButtons();
-
+        realm = Realm.getDefaultInstance();
         //--- Delete this line to do a search of all the devices
         //ble.setFilterService(Constants.SERVICE_COLLAR_INFO);
 
