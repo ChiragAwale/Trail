@@ -1,7 +1,12 @@
 package com.chiragawale.trail;
 
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.ederdoski.simpleble.interfaces.BleCallback;
+import com.ederdoski.simpleble.utils.BluetoothLEHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -9,13 +14,19 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.chiragawale.trail.ui.main.SectionsPagerAdapter;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
+    BluetoothLEHelper ble;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +42,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, BluetoothUtility.class);
+                startActivity(intent);
             }
         });
     }
+
 }
