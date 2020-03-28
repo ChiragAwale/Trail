@@ -84,10 +84,10 @@ public class MainActivity extends BaseActivity {
         Beacon beacon = new Beacon.Builder()
                 .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
                 .setId2("1")
-                .setId3("2")
+                .setId3("3")
                 .setManufacturer(0x0118) // Radius Networks.  Change this for other beacon layouts
                 .setTxPower(-59)
-                .setDataFields(Arrays.asList(new Long[] {0l})) // Remove this for beacon layouts without d: fields
+                .setDataFields(Arrays.asList(new Long[] {5l})) // Remove this for beacon layouts without d: fields
                 .build();
         // Change the layout below for other beacon types
         BeaconParser beaconParser = new BeaconParser()

@@ -20,6 +20,16 @@ public class RealmEntry extends RealmObject {
 
     }
 
+    public RealmEntry(String name, String time, String location, String type, String bluetoothAddress, double distance, int rssi) {
+        this.name = name;
+        this.time = time;
+        this.location = location;
+        this.type = type;
+        this.bluetoothAddress = bluetoothAddress;
+        this.distance = distance;
+        this.rssi = rssi;
+    }
+
     @Override
     public String toString() {
         return name + " Mac: " + macAddress;

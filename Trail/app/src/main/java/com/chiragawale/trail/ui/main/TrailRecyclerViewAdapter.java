@@ -33,10 +33,10 @@ public class TrailRecyclerViewAdapter extends RecyclerView.Adapter<TrailRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mContentView.setText(mValues.get(position).getName() +" "
-                + mValues.get(position).getMacAddress() + " "
+                + mValues.get(position).getBluetoothAddress() + " "
                 + mValues.get(position).getTime() + " "
-                + mValues.get(position).getLocation() + " "
-                + mValues.get(position).getRssi());
+                + mValues.get(position).getDistance() + " "
+                + mValues.get(position).getType());
 
     }
 

@@ -9,10 +9,12 @@ public class DaoImpl implements Dao {
         realm.beginTransaction();
         RealmEntry e = realm.createObject(RealmEntry.class);
         e.setName(realmEntry.getName());
+        e.setBluetoothAddress(realmEntry.getBluetoothAddress());
+        e.setDistance(realmEntry.getDistance());
+        e.setTime(realmEntry.getTime());
+        e.setType(realmEntry.getType());
         e.setMacAddress(realmEntry.getMacAddress());
         e.setRssi(realmEntry.getRssi());
-        e.setTime(realmEntry.getTime());
-        e.setLocation("N/A");
         realm.commitTransaction();
     }
 

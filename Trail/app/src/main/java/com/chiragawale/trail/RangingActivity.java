@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.chiragawale.trail.models.RealmEntry;
+import com.chiragawale.trail.utils.TimeUtils;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -13,7 +17,7 @@ import org.altbeacon.beacon.Region;
 
 import java.util.Collection;
 
-public class RangingActivity extends Activity
+public class RangingActivity extends BaseActivity
         implements BeaconConsumer {
     protected static final String TAG = "RangingActivity";
     private BeaconManager beaconManager;
@@ -41,7 +45,12 @@ public class RangingActivity extends Activity
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
                 if (beacons.size() > 0) {
-                    Log.e(TAG, "The first beacon I see is about "+ beacons.iterator().next().getDistance()+" meters away.");
+                    Beacon beacon = beacons.iterator().next();
+//                    Log.e(TAG, "The first beacon I see is about "+beacon.getBluetoothAddress() + " " + beacons.iterator().next().getDistance()+" meters away.")
+                    Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
+                    Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
+                    RealmEntry entry = new RealmEntry("tName", TimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi());
+                    dao.addEntry(entry);
                 }
             }
         });
