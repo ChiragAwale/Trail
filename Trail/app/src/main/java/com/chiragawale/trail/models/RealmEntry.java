@@ -6,11 +6,11 @@ import io.realm.RealmObject;
 
 public class RealmEntry extends RealmObject {
 
-    private String name;
-    private String macAddress;
+    private String name,macAddress,time,location, type, bluetoothAddress;
     private int rssi;
-    private String time;
-    private String location;
+    private double distance;
+
+
     public RealmEntry(){}
 
     public RealmEntry(String name, String macAddress, int rssi, BluetoothDevice device) {
@@ -63,5 +63,29 @@ public class RealmEntry extends RealmObject {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public String getBluetoothAddress() {
+        return bluetoothAddress;
+    }
+
+    public void setBluetoothAddress(String bluetoothAddress) {
+        this.bluetoothAddress = bluetoothAddress;
     }
 }
