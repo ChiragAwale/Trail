@@ -83,7 +83,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
             @Override
             public void run() {
                 stopRanging();
-                Log.e("worker", "Paused transmitting ");
+                Log.e("worker", "Paused ranging ");
                 transmit();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -134,13 +134,13 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
             @Override
             public void onStartSuccess(AdvertiseSettings settingsInEffect) {
                 Log.e("BEACON", "Advertisement start succeeded.");
-                Toast.makeText(getApplicationContext(),"Start transmit "+ hmap.size(),Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private  void stopTransmit(){
         beaconTransmitter.stopAdvertising();
+        Log.e(TAG,"Stopped transmit " + hmap.size());
 //        beaconManager.removeAllRangeNotifiers();
 //        try {
 //            beaconManager.stopMonitoringBeaconsInRegion(region);
@@ -184,7 +184,6 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     public void onBeaconServiceConnect() {
         region = new Region("myRangingUniqueId", null, null, null);
         Log.e(TAG, "Ranging Connect");
-        Toast.makeText(getApplicationContext(),"Ranging start "+ hmap.size(),Toast.LENGTH_SHORT).show();
         beaconManager.removeAllRangeNotifiers();
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
