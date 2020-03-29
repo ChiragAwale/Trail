@@ -11,7 +11,6 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import androidx.work.WorkerParameters;
 
 import com.chiragawale.trail.MainActivity;
 import com.chiragawale.trail.R;
-import com.chiragawale.trail.RangingActivity;
 import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
@@ -42,7 +40,6 @@ import org.altbeacon.beacon.Region;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Timer;
 
 
 public class NotificationWorker extends Worker implements BeaconConsumer {
