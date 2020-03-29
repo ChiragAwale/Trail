@@ -65,6 +65,19 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "Message has been Sent");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
+        processWork();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                processWork();
+                Log.e("worker", "Process work again ");
+            }
+        }, 60000);
+
+        return Result.success(outputData);
+    }
+
+    public void processWork(){
         rangerStart();
         handler.postDelayed(new Runnable() {
             @Override
@@ -81,9 +94,6 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                 }, 15000);
             }
         }, 15000);
-
-
-        return Result.success(outputData);
     }
     private void showNotification(String task, String desc) {
         NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -124,6 +134,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
             @Override
             public void onStartSuccess(AdvertiseSettings settingsInEffect) {
                 Log.e("BEACON", "Advertisement start succeeded.");
+                Toast.makeText(getApplicationContext(),"Start transmit "+ hmap.size(),Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -172,7 +183,8 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     @Override
     public void onBeaconServiceConnect() {
         region = new Region("myRangingUniqueId", null, null, null);
-        Log.e(TAG, "Service Connect");
+        Log.e(TAG, "Ranging Connect");
+        Toast.makeText(getApplicationContext(),"Ranging start "+ hmap.size(),Toast.LENGTH_SHORT).show();
         beaconManager.removeAllRangeNotifiers();
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
