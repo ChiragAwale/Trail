@@ -8,5 +8,5 @@ import com.chiragawale.trail.dao.DaoImpl;
 import io.realm.Realm;
 
 public class BaseActivity extends AppCompatActivity {
-    Dao dao = new DaoImpl();
+    public Dao dao = new DaoImpl();
 }
