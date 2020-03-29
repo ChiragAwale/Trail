@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -65,14 +66,23 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         showNotification("WorkManager", taskDataString != null ? taskDataString : "Message has been Sent");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
         rangerStart();
-        transmit();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                stopTransmit();
-                Log.e("woker", "Stopped transmitting");
+                stopRanging();
+                Log.e("worker", "Paused transmitting ");
+                transmit();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        stopTransmit();
+                        Log.e("worker", "Paused transmitting ");
+                    }
+                }, 15000);
             }
-        }, 30000);
+        }, 15000);
+
+
         return Result.success(outputData);
     }
     private void showNotification(String task, String desc) {
@@ -120,14 +130,24 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
 
     private  void stopTransmit(){
         beaconTransmitter.stopAdvertising();
+//        beaconManager.removeAllRangeNotifiers();
+//        try {
+//            beaconManager.stopMonitoringBeaconsInRegion(region);
+//        } catch (RemoteException e){Log.e(TAG,"Remote Exception");}
+//
+//        beaconManager.unbind(this);
+    }
+
+    private  void stopRanging(){
         beaconManager.removeAllRangeNotifiers();
         try {
             beaconManager.stopMonitoringBeaconsInRegion(region);
         } catch (RemoteException e){Log.e(TAG,"Remote Exception");}
-
         beaconManager.unbind(this);
+
         dao.addMap(hmap);
-        Log.e(TAG,"MAP ADDEd " + hmap.size());
+        Log.e(TAG,"MAP Added stoped ranging " + hmap.size());
+        Toast.makeText(getApplicationContext(),"MAP ADDED STOPPED RANGIN "+ hmap.size(),Toast.LENGTH_LONG).show();
     }
 
     public void rangerStart(){
@@ -183,5 +203,13 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     @Override
     public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
         return false;
+    }
+
+    @Override
+    public void onStopped() {
+        super.onStopped();
+        stopRanging();
+        stopTransmit();
+
     }
 }
