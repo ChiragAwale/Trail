@@ -1,4 +1,4 @@
-package com.chiragawale.trail;
+package com.chiragawale.trail.beacon;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.chiragawale.trail.BaseActivity;
+import com.chiragawale.trail.R;
 import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.utils.TimeUtils;
 

@@ -1,4 +1,4 @@
-package com.chiragawale.trail;
+package com.chiragawale.trail.bluetooth;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.chiragawale.trail.BaseActivity;
+import com.chiragawale.trail.R;
 import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.utils.TimeUtils;
 import com.ederdoski.simpleble.interfaces.BleCallback;

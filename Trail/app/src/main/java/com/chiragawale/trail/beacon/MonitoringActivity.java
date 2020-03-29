@@ -1,9 +1,11 @@
-package com.chiragawale.trail;
+package com.chiragawale.trail.beacon;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
+
+import com.chiragawale.trail.R;
 
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;

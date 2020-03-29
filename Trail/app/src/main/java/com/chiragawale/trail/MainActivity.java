@@ -1,53 +1,38 @@
 package com.chiragawale.trail;
 
 import android.Manifest;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.le.AdvertiseCallback;
-import android.bluetooth.le.AdvertiseSettings;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.chiragawale.trail.bluetooth.BluetoothUtility;
 import com.chiragawale.trail.worker.NotificationWorker;
-import com.ederdoski.simpleble.interfaces.BleCallback;
 import com.ederdoski.simpleble.utils.BluetoothLEHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chiragawale.trail.ui.main.SectionsPagerAdapter;
 
 import org.altbeacon.beacon.Beacon;
-import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.BeaconTransmitter;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
-
-import io.realm.Realm;
 
 public class MainActivity extends BaseActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
