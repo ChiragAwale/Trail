@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -38,7 +39,7 @@ public class MainActivity extends BaseActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     public static final String MESSAGE_STATUS = "message_status";
     TextView tvStatus;
-    Button btnSend;
+    Button btnSend, btnStop;
     BeaconTransmitter beaconTransmitter;
     Beacon beacon;
     BluetoothLEHelper ble;
@@ -106,26 +107,21 @@ public class MainActivity extends BaseActivity {
 //            }
 //        });
         tvStatus = findViewById(R.id.tvStatus);
-        btnSend = findViewById(R.id.btnSend);
-        PeriodicWorkRequest mRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class,15, TimeUnit.MINUTES)
+        btnSend = findViewById(R.id.btnStart);
+        btnStop = findViewById(R.id.btnStop);
+        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
                 .build();
         final WorkManager mWorkManager = WorkManager.getInstance(getApplicationContext());
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mWorkManager.enqueue(mRequest);
+        btnSend.setOnClickListener(v -> mWorkManager.enqueue(mRequest));
+        btnStop.setOnClickListener(v -> mWorkManager.cancelWorkById(mRequest.getId()));
+        mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(this, workInfo -> {
+            if (workInfo != null) {
+                WorkInfo.State state = workInfo.getState();
+                tvStatus.append(state.toString() + "\n");
             }
         });
-        mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(@Nullable WorkInfo workInfo) {
-                if (workInfo != null) {
-                    WorkInfo.State state = workInfo.getState();
-                    tvStatus.append(state.toString() + "\n");
-                }
-            }
 
-        });
+
 
 }
 

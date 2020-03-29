@@ -62,15 +62,16 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "Message has been Sent");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
-        processWork();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                processWork();
-                Log.e("worker", "Process work again ");
+        for(int i = 0; i < 5;i ++) {
+            processWork();
+            try {
+                Thread.sleep(45000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Log.e(TAG,e.getMessage() + " ");
             }
-        }, 60000);
-
+        }
+        Log.e(TAG,"END WORK");
         return Result.success(outputData);
     }
 
