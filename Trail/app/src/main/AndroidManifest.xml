@@ -48,6 +48,5 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-feature    android:name="android.hardware.bluetooth_le" android:required="false"/>
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
 </manifest>

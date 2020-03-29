@@ -2,6 +2,7 @@ package com.chiragawale.trail.worker;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseSettings;
 import android.content.Context;
@@ -51,6 +52,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     private static final String WORK_RESULT = "work_result";
     final Handler handler = new Handler(Looper.getMainLooper());
     private BeaconManager beaconManager;
+    private Dao dao = new DaoImpl();
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -64,9 +66,6 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
         rangerStart();
         transmit();
-        Intent intent = new Intent(getApplicationContext(), RActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplicationContext().startActivity(intent);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -125,6 +124,15 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     }
 
     public void rangerStart(){
+        BluetoothAdapter.getDefaultAdapter().disable();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "bluetooth adapter try to enable");
+                BluetoothAdapter.getDefaultAdapter().enable();
+            }}, 500);
+
+
         beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
@@ -132,10 +140,12 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         //        setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         Log.e(TAG, "Oncreate reached");
         beaconManager.bind(this);
+
     }
 
     @Override
     public void onBeaconServiceConnect() {
+        Log.e(TAG, "Service Connect");
         beaconManager.removeAllRangeNotifiers();
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
@@ -146,7 +156,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                     Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
                     Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
                     RealmEntry entry = new RealmEntry("tName", TimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi());
-//                    dao.addEntry(entry);
+                    dao.addEntry(entry);
                 }
             }
         });
