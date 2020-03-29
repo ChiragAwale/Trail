@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this, RangingActivity.class);
+                Intent intent = new Intent(MainActivity.this, BluetoothUtility.class);
                 startActivity(intent);
             }
         });
@@ -96,6 +96,30 @@ public class MainActivity extends BaseActivity {
             }
         }
 
+//                Beacon beacon = new Beacon.Builder()
+//                .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
+//                .setId2("1")
+//                .setId3("3")
+//                .setManufacturer(0x0118) // Radius Networks.  Change this for other beacon layouts
+//                .setTxPower(-59)
+//                .setDataFields(Arrays.asList(new Long[] {5l})) // Remove this for beacon layouts without d: fields
+//                .build();
+//        // Change the layout below for other beacon types
+//        BeaconParser beaconParser = new BeaconParser()
+//                .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
+//        BeaconTransmitter beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
+//        beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
+//
+//            @Override
+//            public void onStartFailure(int errorCode) {
+//                Log.e("BEACON", "Advertisement start failed with code: "+errorCode);
+//            }
+//
+//            @Override
+//            public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+//                Log.e("BEACON", "Advertisement start succeeded1.");
+//            }
+//        });
         tvStatus = findViewById(R.id.tvStatus);
         btnSend = findViewById(R.id.btnSend);
         PeriodicWorkRequest mRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class,15, TimeUnit.MINUTES)
@@ -115,6 +139,7 @@ public class MainActivity extends BaseActivity {
                     tvStatus.append(state.toString() + "\n");
                 }
             }
+
         });
 
 }
