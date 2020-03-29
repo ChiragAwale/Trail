@@ -23,6 +23,7 @@ import androidx.work.WorkerParameters;
 
 import com.chiragawale.trail.MainActivity;
 import com.chiragawale.trail.R;
+import com.chiragawale.trail.RangingActivity;
 import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
@@ -44,11 +45,12 @@ import java.util.Timer;
  * Created on : Mar 26, 2019
  * Author     : AndroidWave
  */
-public class NotificationWorker extends Worker {
+public class NotificationWorker extends Worker implements BeaconConsumer {
     protected static final String TAG = "NotificationWorker";
     private BeaconTransmitter beaconTransmitter;
     private static final String WORK_RESULT = "work_result";
     final Handler handler = new Handler(Looper.getMainLooper());
+    private BeaconManager beaconManager;
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -60,7 +62,11 @@ public class NotificationWorker extends Worker {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "Message has been Sent");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
+        rangerStart();
         transmit();
+        Intent intent = new Intent(getApplicationContext(), RActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(intent);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -118,4 +124,45 @@ public class NotificationWorker extends Worker {
 
     }
 
+    public void rangerStart(){
+        beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
+        // To detect proprietary beacons, you must add a line like below corresponding to your beacon
+        // type.  Do a web search for "setBeaconLayout" to get the proper expression.
+        // beaconManager.getBeaconParsers().add(new BeaconParser().
+        //        setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        Log.e(TAG, "Oncreate reached");
+        beaconManager.bind(this);
+    }
+
+    @Override
+    public void onBeaconServiceConnect() {
+        beaconManager.removeAllRangeNotifiers();
+        beaconManager.addRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                if (beacons.size() > 0) {
+                    Beacon beacon = beacons.iterator().next();
+//                    Log.e(TAG, "The first beacon I see is about "+beacon.getBluetoothAddress() + " " + beacons.iterator().next().getDistance()+" meters away.")
+                    Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
+                    Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
+                    RealmEntry entry = new RealmEntry("tName", TimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi());
+//                    dao.addEntry(entry);
+                }
+            }
+        });
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
+        } catch (RemoteException e) {    }
+    }
+
+    @Override
+    public void unbindService(ServiceConnection serviceConnection) {
+
+    }
+
+    @Override
+    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+        return false;
+    }
 }
