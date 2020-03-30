@@ -4,98 +4,92 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
-    app:cardBackgroundColor="#008FE7"
+    app:cardBackgroundColor="#ffffff"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:id="@+id/ll_bluetooth_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:hint="Bluetooth Address: "
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff"
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
+                android:hint="Bt Addr: "
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_bluetooth_address"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff" />
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:hint="Address" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_distance"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_below="@id/ll_bluetooth_address">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
                 android:hint="Distance: "
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_distance"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff" />
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_below="@id/ll_distance">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
                 android:hint="Type: "
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_type"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff" />
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_time"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_below="@id/ll_type">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
                 android:hint="Time: "
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="#ffffff"
@@ -104,35 +98,33 @@
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff" />
+                />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_below="@id/ll_time">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
                 android:hint="Location: "
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#ffffff" />
+                android:layout_margin="5dp"
+                android:layout_height="20dp"
+                android:textAppearance="?attr/textAppearanceListItem" />
 
         </LinearLayout>
 
