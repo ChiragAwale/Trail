@@ -79,7 +79,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "All set");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
-        for(int i = 0; i < 3;i ++) {
+        for(int i = 0; i < 1;i ++) {
             processWork();
             try {
                 Thread.sleep(130000);
