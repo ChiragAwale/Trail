@@ -19,7 +19,7 @@ I was able to build the app side of the project, and make the transmitting and r
 How beacons work, how the bluetooth technologies in android are privacy protected as they transmit different bluetooth address every-time it transmits
 
 ## Current limitations
-Currently the app is set up to run for 2 minutes (1 min transmit and 1 min range) which will be later changed to run for specified time period.
+Currently the app is set up to run for 2 minutes (1 min transmit and 1 min range) which will be later changed to run for specified time period. The data is saved locally right now which will later be uploaded automatically to server for full functionality.
 
 ## What's next for Trail
 - Building the server which generates the list of people in contact. Optimizing the application, and maybe incorporating the Google Nearby API.
