@@ -1,12 +1,8 @@
 package com.chiragawale.trail.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -15,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +31,6 @@ public class Trail extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     Button btnSend;
-    RecyclerView recyclerView;
-    TrailRecyclerViewAdapter adapter;
     TextView tv_total,tv_today;
 
     Dao dao = new DaoImpl();
@@ -45,17 +38,8 @@ public class Trail extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.trail_item_list, container, false);
+        View view = inflater.inflate(R.layout.trail_layout, container, false);
         btnSend = view.findViewById(R.id.btnStart);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            adapter = new TrailRecyclerViewAdapter(dao.getEntryList(), mListener);
-            recyclerView.setAdapter(adapter);
-        }
         tv_total = view.findViewById(R.id.tv_total);
         tv_today = view.findViewById(R.id.tv_today);
         tv_total.setText(dao.getEntryList().size() + "");

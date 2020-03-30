@@ -1,15 +1,13 @@
 package com.chiragawale.trail.beacon;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.chiragawale.trail.BaseActivity;
 import com.chiragawale.trail.R;
 import com.chiragawale.trail.models.RealmEntry;
-import com.chiragawale.trail.utils.TimeUtils;
+import com.chiragawale.trail.utils.CustomTimeUtils;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -52,7 +50,7 @@ public class RangingActivity extends BaseActivity
 //                    Log.e(TAG, "The first beacon I see is about "+beacon.getBluetoothAddress() + " " + beacons.iterator().next().getDistance()+" meters away.")
                     Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
                     Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
-                    RealmEntry entry = new RealmEntry("tName", TimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi());
+                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
                     dao.addEntry(entry);
                 }
             }

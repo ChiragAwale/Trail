@@ -15,7 +15,7 @@
         android:visibility="gone"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.main.Trail"
-        tools:listitem="@layout/trail_item" />
+        tools:listitem="@layout/admin_view_item" />
 
 
     <TextView

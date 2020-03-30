@@ -1,7 +1,9 @@
 package com.chiragawale.trail.dao;
 
+import android.util.TimeUtils;
+
 import com.chiragawale.trail.models.RealmEntry;
-import com.chiragawale.trail.utils.TimeUtils;
+import com.chiragawale.trail.utils.CustomTimeUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,7 @@ public class DaoImpl implements Dao {
         e.setType(realmEntry.getType());
         e.setMacAddress(realmEntry.getMacAddress());
         e.setRssi(realmEntry.getRssi());
+        e.setMs_time(realmEntry.getMs_time());
         realm.commitTransaction();
         } finally {
             realm.close();
@@ -50,6 +53,6 @@ public class DaoImpl implements Dao {
     @Override
     public List<RealmEntry> getEntryListToday() {
         Realm realm = Realm.getDefaultInstance();
-        return realm.where(RealmEntry.class).equalTo("time",TimeUtils.currentTimeStamp()).findAll();
+        return realm.where(RealmEntry.class).equalTo("ms_time", CustomTimeUtils.trimmedCurrentTimestampLong()).findAll();
     }
 }

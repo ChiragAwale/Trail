@@ -18,7 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.chiragawale.trail.BaseActivity;
 import com.chiragawale.trail.R;
 import com.chiragawale.trail.models.RealmEntry;
-import com.chiragawale.trail.utils.TimeUtils;
+import com.chiragawale.trail.utils.CustomTimeUtils;
 import com.ederdoski.simpleble.interfaces.BleCallback;
 import com.ederdoski.simpleble.models.BluetoothLE;
 import com.ederdoski.simpleble.utils.BluetoothLEHelper;
@@ -78,7 +78,7 @@ public class BluetoothUtility extends BaseActivity {
                 realmEntry.setName(ble.getListDevices().get(i).getName());
                 realmEntry.setMacAddress(ble.getListDevices().get(i).getMacAddress());
                 realmEntry.setRssi(ble.getListDevices().get(i).getRssi());
-                realmEntry.setTime(TimeUtils.currentTimeStamp());
+                realmEntry.setTime(CustomTimeUtils.currentTimeStamp());
                 realmEntry.setLocation("N/A");
                 dao.addEntry(realmEntry);
             }

@@ -8,32 +8,21 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.chiragawale.trail.bluetooth.BluetoothUtility;
-import com.chiragawale.trail.worker.NotificationWorker;
-import com.ederdoski.simpleble.utils.BluetoothLEHelper;
+import com.chiragawale.trail.ui.main.AdminView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import com.chiragawale.trail.ui.main.SectionsPagerAdapter;
-
-import org.altbeacon.beacon.Beacon;
-import org.altbeacon.beacon.BeaconTransmitter;
-
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Nullable;
 
 public class MainActivity extends BaseActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -78,7 +67,7 @@ public class MainActivity extends BaseActivity {
                 builder.show();
             }
         }
-}
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -106,4 +95,24 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.m_admin_view:
+                Intent intent = new Intent(this, AdminView.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+//    }
+    }
 }

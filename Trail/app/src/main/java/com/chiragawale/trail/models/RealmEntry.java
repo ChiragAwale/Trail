@@ -9,18 +9,12 @@ public class RealmEntry extends RealmObject {
     private String name,macAddress,time,location, type, bluetoothAddress;
     private int rssi;
     private double distance;
+    private long ms_time;
 
 
     public RealmEntry(){}
 
-    public RealmEntry(String name, String macAddress, int rssi, BluetoothDevice device) {
-        this.name       = name;
-        this.macAddress = macAddress;
-        this.rssi       = rssi;
-
-    }
-
-    public RealmEntry(String name, String time, String location, String type, String bluetoothAddress, double distance, int rssi) {
+    public RealmEntry(String name, String time, String location, String type, String bluetoothAddress, double distance, int rssi, long ms_time) {
         this.name = name;
         this.time = time;
         this.location = location;
@@ -28,6 +22,15 @@ public class RealmEntry extends RealmObject {
         this.bluetoothAddress = bluetoothAddress;
         this.distance = distance;
         this.rssi = rssi;
+        this.ms_time = ms_time;
+    }
+
+    public long getMs_time() {
+        return ms_time;
+    }
+
+    public void setMs_time(long ms_time) {
+        this.ms_time = ms_time;
     }
 
     @Override

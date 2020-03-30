@@ -27,7 +27,7 @@ import com.chiragawale.trail.R;
 import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
-import com.chiragawale.trail.utils.TimeUtils;
+import com.chiragawale.trail.utils.CustomTimeUtils;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -62,10 +62,10 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "All set");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
-        for(int i = 0; i < 10;i ++) {
+        for(int i = 0; i < 3;i ++) {
             processWork();
             try {
-                Thread.sleep(45000);
+                Thread.sleep(130000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Log.e(TAG,e.getMessage() + " ");
@@ -89,9 +89,9 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                         stopTransmit();
                         Log.e("worker", "Paused transmitting ");
                     }
-                }, 15000);
+                }, 60000);
             }
-        }, 15000);
+        }, 60000);
     }
     private void showNotification(String task, String desc) {
         NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -155,13 +155,13 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
 
     public void rangerStart(){
         hmap = new HashMap<>();
-        BluetoothAdapter.getDefaultAdapter().disable();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "bluetooth adapter try to enable");
-                BluetoothAdapter.getDefaultAdapter().enable();
-            }}, 500);
+//        BluetoothAdapter.getDefaultAdapter().disable();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d(TAG, "bluetooth adapter try to enable");
+//                BluetoothAdapter.getDefaultAdapter().enable();
+//            }}, 500);
         beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
@@ -186,7 +186,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                     Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
                     Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
 
-                    RealmEntry entry = new RealmEntry("tName", TimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi());
+                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
                     hmap.put(beacon.getBluetoothAddress(),entry);
                 }
             }
