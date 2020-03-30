@@ -4,7 +4,7 @@ COVID-19 has been spreading immensely, even though measures have been put in pla
 ## What it does
 Once the user turns on the app and hits start ("Indicates he is going somewhere out side") the app starts periodically transmitting as a beacon and receiving signals for a set amount of time. When it detects another beacon nearby, it stores the data such as bluetooth address transmitted, distance, and mainly location and time it detected the other beacon.
 
-When a health care provider needs to know who a person just tested positive for COVID-19 has been in contact recently, he/she can login with their admin credentials on the Trail web server, and put in the UserAccount and access code given from the app. The server matches  "Time" and geofenced "Location" to generate a list of people in that area at that time. This matching of admin credentials with app access code and user account protects privacy.
+When a health care provider needs to know who a person just tested positive for COVID-19 has been in contact recently, he/she can login with their admin credentials on the Trail web server, and put in the UserAccount and access code given from the app. The server matches  **"Time" and geofenced "Location"** to generate a list of people in that area at that time. This **matching of admin credentials with app access code and user account protects privacy.**
 
 ## How I built it
 I used it by going through doc of AltBeacon, Google, and the libraries I have used in the application. The app uses WorkManager to schedule work in the background. The user does not have to keep the app open for it to work.
