@@ -8,6 +8,7 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +29,9 @@ import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.utils.CustomTimeUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -51,9 +55,22 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     private Dao dao = new DaoImpl();
     Region region;
     HashMap<String, RealmEntry> hmap;
+    private FusedLocationProviderClient fusedLocationClient;
+    String mlocation = "";
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            // Logic to handle location object
+                            mlocation = "Lat:"+ location.getLatitude() + "Long:" + location.getLongitude();
+                        }
+                    }
+                });
     }
     @NonNull
     @Override
@@ -186,7 +203,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                     Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
                     Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
 
-                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
+                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimeStamp(),mlocation,"beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
                     hmap.put(beacon.getBluetoothAddress(),entry);
                 }
             }

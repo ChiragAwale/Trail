@@ -36,7 +36,7 @@ public class TrailRecyclerViewAdapter extends RecyclerView.Adapter<TrailRecycler
         holder.tv_bluetooth_address.setText(mValues.get(position).getBluetoothAddress());
         holder.tv_type.setText(mValues.get(position).getType());
         holder.tv_distance.setText(mValues.get(position).getDistance() + "");
-        //holder.tv_location.setText(mValues.get(position).getMs_time() + " " + CustomTimeUtils.trimmedCurrentTimestampLong());
+        holder.tv_location.setText(mValues.get(position).getLocation());
 
     }
 
