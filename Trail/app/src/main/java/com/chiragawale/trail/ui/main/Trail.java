@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.worker.NotificationWorker;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 /**
  * A fragment representing a list of Items.
@@ -29,7 +33,7 @@ import com.chiragawale.trail.worker.NotificationWorker;
  */
 public class Trail extends Fragment {
     private OnListFragmentInteractionListener mListener;
-
+    
     Button btnSend;
     TextView tv_total,tv_today;
 
@@ -44,14 +48,29 @@ public class Trail extends Fragment {
         tv_today = view.findViewById(R.id.tv_today);
         tv_total.setText(dao.getEntryList().size() + "");
         tv_today.setText(dao.getEntryListToday().size() + "");
+        ImageView iv_loading = view.findViewById(R.id.iv_loading);
+        YoYo.with(Techniques.FadeIn)
+                .repeat(2)
+                .duration(800)
+                .playOn(tv_today);
+        YoYo.with(Techniques.FadeIn)
+                .repeat(2)
+                .duration(800)
+                .playOn(tv_total);
+        YoYo.with(Techniques.FadeOut)
+                .repeat(Animation.INFINITE)
+                .duration(1000)
+                .playOn(iv_loading);
 
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                .addTag("RangeAndTransmit")
                 .build();
         final WorkManager mWorkManager = WorkManager.getInstance(getContext());
         btnSend.setOnClickListener(v ->{
             mWorkManager.enqueue(mRequest);
             btnSend.setEnabled(false);
             btnSend.setAlpha(0.4f);
+            iv_loading.setVisibility(View.VISIBLE);
         });
 
         mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(this, workInfo -> {
@@ -61,6 +80,7 @@ public class Trail extends Fragment {
                 if(state.toString().equalsIgnoreCase("SUCCEEDED")){
                     btnSend.setEnabled(true);
                     btnSend.setAlpha(1f);
+                    iv_loading.setVisibility(View.GONE);
                     tv_total.setText(dao.getEntryList().size() + "");
                     tv_today.setText(dao.getEntryListToday().size() + "");
                 }

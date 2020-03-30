@@ -36,6 +36,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation "com.ederdoski.ble:simpleble:1.0"
     implementation 'org.altbeacon:android-beacon-library:2.16.4'
+    implementation 'com.android.support:support-compat:28.1.1'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+
 }
 
 dependencies {
