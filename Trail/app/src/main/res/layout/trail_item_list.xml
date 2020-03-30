@@ -1,13 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.chiragawale.trail.ui.main.Trail"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.main.Trail"
-    tools:listitem="@layout/trail_item" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="com.chiragawale.trail.ui.main.Trail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ui.main.Trail"
+        tools:listitem="@layout/trail_item" />
+
+
+    <TextView
+        android:paddingTop="24dp"
+        android:id="@+id/label_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Met Today"
+        android:layout_centerHorizontal="true"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/tv_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_today"
+        android:layout_centerHorizontal="true"
+        android:hint="Today"
+        android:padding="24dp"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/label_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_today"
+        android:layout_centerHorizontal="true"
+        android:text="Total Met"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/tv_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_total"
+        android:layout_centerHorizontal="true"
+        android:hint="Total"
+        android:padding="24dp"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Start"
+        android:textAllCaps="false"
+        android:textColor="#fff" />
+
+
+</RelativeLayout>

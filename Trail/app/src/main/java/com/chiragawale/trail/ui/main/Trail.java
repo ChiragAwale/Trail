@@ -7,15 +7,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chiragawale.trail.R;
 import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
+import com.chiragawale.trail.worker.NotificationWorker;
 
 /**
  * A fragment representing a list of Items.
@@ -24,70 +33,60 @@ import com.chiragawale.trail.models.RealmEntry;
  * interface.
  */
 public class Trail extends Fragment {
-
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    Button btnSend;
+    RecyclerView recyclerView;
+    TrailRecyclerViewAdapter adapter;
+    TextView tv_total,tv_today;
+
     Dao dao = new DaoImpl();
-    public Trail() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static Trail newInstance(int columnCount) {
-        Trail fragment = new Trail();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.trail_item_list, container, false);
+        btnSend = view.findViewById(R.id.btnStart);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new TrailRecyclerViewAdapter(dao.getEntryList(), mListener));
+            recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            adapter = new TrailRecyclerViewAdapter(dao.getEntryList(), mListener);
+            recyclerView.setAdapter(adapter);
         }
+        tv_total = view.findViewById(R.id.tv_total);
+        tv_today = view.findViewById(R.id.tv_today);
+        tv_total.setText(dao.getEntryList().size() + "");
+        tv_today.setText(dao.getEntryListToday().size() + "");
+
+        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+                .build();
+        final WorkManager mWorkManager = WorkManager.getInstance(getContext());
+        btnSend.setOnClickListener(v ->{
+            mWorkManager.enqueue(mRequest);
+            btnSend.setEnabled(false);
+            btnSend.setAlpha(0.4f);
+        });
+
+        mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(this, workInfo -> {
+            if (workInfo != null) {
+                WorkInfo.State state = workInfo.getState();
+                Log.e("WORKER", state.toString());
+                if(state.toString().equalsIgnoreCase("SUCCEEDED")){
+                    btnSend.setEnabled(true);
+                    btnSend.setAlpha(1f);
+                    tv_total.setText(dao.getEntryList().size() + "");
+                    tv_today.setText(dao.getEntryListToday().size() + "");
+                }
+                Toast.makeText(getContext(),state.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnListFragmentInteractionListener) {
-//            mListener = (OnListFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnListFragmentInteractionListener");
-//        }
-    }
 
     @Override
     public void onDetach() {
@@ -95,16 +94,6 @@ public class Trail extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(RealmEntry realmEntry);

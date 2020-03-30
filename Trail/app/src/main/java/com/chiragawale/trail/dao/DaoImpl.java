@@ -1,6 +1,7 @@
 package com.chiragawale.trail.dao;
 
 import com.chiragawale.trail.models.RealmEntry;
+import com.chiragawale.trail.utils.TimeUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,5 +45,11 @@ public class DaoImpl implements Dao {
     public List<RealmEntry> getEntryList() {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(RealmEntry.class).findAll();
+    }
+
+    @Override
+    public List<RealmEntry> getEntryListToday() {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(RealmEntry.class).equalTo("time",TimeUtils.currentTimeStamp()).findAll();
     }
 }

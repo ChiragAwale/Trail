@@ -9,11 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.chiragawale.trail.R;
+import com.chiragawale.trail.bluetooth.BluetoothUtility;
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
@@ -27,9 +24,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return Trail.newInstance(1);
+        if (position == 0)
+            return new Trail();
+        else
+            return PlaceholderFragment.newInstance(0);
     }
 
     @Nullable
@@ -40,7 +38,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
         return 2;
     }
 }

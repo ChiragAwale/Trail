@@ -38,11 +38,7 @@ import javax.annotation.Nullable;
 public class MainActivity extends BaseActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     public static final String MESSAGE_STATUS = "message_status";
-    TextView tvStatus;
-    Button btnSend, btnStop;
-    BeaconTransmitter beaconTransmitter;
-    Beacon beacon;
-    BluetoothLEHelper ble;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +61,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android M Permission check 
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -81,48 +78,6 @@ public class MainActivity extends BaseActivity {
                 builder.show();
             }
         }
-
-//                Beacon beacon = new Beacon.Builder()
-//                .setId1("2f234454-cf6d-4a0f-adf2-f4911ba9ffa6")
-//                .setId2("1")
-//                .setId3("3")
-//                .setManufacturer(0x0118) // Radius Networks.  Change this for other beacon layouts
-//                .setTxPower(-59)
-//                .setDataFields(Arrays.asList(new Long[] {5l})) // Remove this for beacon layouts without d: fields
-//                .build();
-//        // Change the layout below for other beacon types
-//        BeaconParser beaconParser = new BeaconParser()
-//                .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
-//        BeaconTransmitter beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
-//        beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
-//
-//            @Override
-//            public void onStartFailure(int errorCode) {
-//                Log.e("BEACON", "Advertisement start failed with code: "+errorCode);
-//            }
-//
-//            @Override
-//            public void onStartSuccess(AdvertiseSettings settingsInEffect) {
-//                Log.e("BEACON", "Advertisement start succeeded1.");
-//            }
-//        });
-        tvStatus = findViewById(R.id.tvStatus);
-        btnSend = findViewById(R.id.btnStart);
-        btnStop = findViewById(R.id.btnStop);
-        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
-                .build();
-        final WorkManager mWorkManager = WorkManager.getInstance(getApplicationContext());
-        btnSend.setOnClickListener(v -> mWorkManager.enqueue(mRequest));
-        btnStop.setOnClickListener(v -> mWorkManager.cancelWorkById(mRequest.getId()));
-        mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(this, workInfo -> {
-            if (workInfo != null) {
-                WorkInfo.State state = workInfo.getState();
-                tvStatus.append(state.toString() + "\n");
-            }
-        });
-
-
-
 }
 
     @Override

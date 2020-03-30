@@ -60,9 +60,9 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     public Result doWork() {
         Data taskData = getInputData();
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
-        showNotification("WorkManager", taskDataString != null ? taskDataString : "Message has been Sent");
+        showNotification("WorkManager", taskDataString != null ? taskDataString : "All set");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
-        for(int i = 0; i < 5;i ++) {
+        for(int i = 0; i < 10;i ++) {
             processWork();
             try {
                 Thread.sleep(45000);
@@ -139,12 +139,6 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     private  void stopTransmit(){
         beaconTransmitter.stopAdvertising();
         Log.e(TAG,"Stopped transmit " + hmap.size());
-//        beaconManager.removeAllRangeNotifiers();
-//        try {
-//            beaconManager.stopMonitoringBeaconsInRegion(region);
-//        } catch (RemoteException e){Log.e(TAG,"Remote Exception");}
-//
-//        beaconManager.unbind(this);
     }
 
     private  void stopRanging(){
@@ -219,6 +213,5 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         super.onStopped();
         stopRanging();
         stopTransmit();
-
     }
 }
