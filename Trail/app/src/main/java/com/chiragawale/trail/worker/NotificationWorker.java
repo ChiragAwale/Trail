@@ -106,7 +106,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                         stopTransmit();
                         Log.e("worker", "Paused transmitting ");
                     }
-                }, 15000);
+                }, 60000);
             }
         }, 60000);
     }

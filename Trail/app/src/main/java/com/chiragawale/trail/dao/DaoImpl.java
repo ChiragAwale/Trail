@@ -1,6 +1,8 @@
 package com.chiragawale.trail.dao;
 
 
+import android.util.Log;
+
 import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.utils.CustomTimeUtils;
 
@@ -62,15 +64,17 @@ public class DaoImpl implements Dao {
     @Override
     public List<RealmEntry> getEntryListToUpload() {
         Realm realm = Realm.getDefaultInstance();
-        List<RealmEntry> entries =  realm.where(RealmEntry.class).equalTo("isUploaded", false).findAll();
+        return realm.where(RealmEntry.class).equalTo("isUploaded", false).findAll();
+    }
+
+    @Override
+    public void markUploadedEntryList() {
+        Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
             RealmResults<RealmEntry> entries1 = realm1.where(RealmEntry.class).equalTo("isUploaded", false).findAll();
             entries1.setValue("isUploaded",true);
         });
-        return entries;
     }
-
-
     //    @Override
 //    public List<RealmEntry> markUploadedEntryList(List<Long> uploadedEntries) {
 //        Realm realm = Realm.getDefaultInstance();

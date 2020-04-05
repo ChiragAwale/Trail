@@ -13,4 +13,5 @@ public interface Dao {
     public List<RealmEntry> getEntryList();
     public List<RealmEntry> getEntryListToday();
     public List<RealmEntry> getEntryListToUpload();
+    public void markUploadedEntryList();
 }

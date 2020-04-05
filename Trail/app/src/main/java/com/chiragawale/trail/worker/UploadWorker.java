@@ -75,8 +75,7 @@ public class UploadWorker extends Worker {
                 Log.e("MSG", conn.getResponseMessage());
                 writer.close();
                 conn.disconnect();
-                Log.e("Tagg", json);
-                // dao.markUploadedEntryList(uploadedEntries);
+                dao.markUploadedEntryList();
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e("UW", e.getMessage());
