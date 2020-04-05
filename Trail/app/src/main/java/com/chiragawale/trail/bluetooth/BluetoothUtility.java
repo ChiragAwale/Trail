@@ -78,7 +78,7 @@ public class BluetoothUtility extends BaseActivity {
                 realmEntry.setName(ble.getListDevices().get(i).getName());
                 realmEntry.setMacAddress(ble.getListDevices().get(i).getMacAddress());
                 realmEntry.setRssi(ble.getListDevices().get(i).getRssi());
-                realmEntry.setTime(CustomTimeUtils.currentTimeStamp());
+                realmEntry.setTime(CustomTimeUtils.currentTimestampLong());
                 realmEntry.setLocation("N/A");
                 dao.addEntry(realmEntry);
             }

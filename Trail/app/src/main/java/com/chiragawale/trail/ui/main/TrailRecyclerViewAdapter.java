@@ -31,7 +31,7 @@ public class TrailRecyclerViewAdapter extends RecyclerView.Adapter<TrailRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.tv_time.setText(mValues.get(position).getTime());
+        holder.tv_time.setText(mValues.get(position).getTime() + "");
         holder.tv_location.setText(mValues.get(position).getLocation());
         holder.tv_bluetooth_address.setText(mValues.get(position).getBluetoothAddress());
         holder.tv_type.setText(mValues.get(position).getType());

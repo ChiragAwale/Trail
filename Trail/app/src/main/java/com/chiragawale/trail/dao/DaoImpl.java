@@ -1,16 +1,18 @@
 package com.chiragawale.trail.dao;
 
-import android.util.TimeUtils;
 
 import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.utils.CustomTimeUtils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class DaoImpl implements Dao {
+    public static long entryId;
     @Override
     public void addEntry(RealmEntry realmEntry) {
         Realm realm = Realm.getDefaultInstance();
@@ -25,6 +27,7 @@ public class DaoImpl implements Dao {
         e.setMacAddress(realmEntry.getMacAddress());
         e.setRssi(realmEntry.getRssi());
         e.setMs_time(realmEntry.getMs_time());
+        e.setUploaded(false);
         realm.commitTransaction();
         } finally {
             realm.close();
@@ -55,4 +58,23 @@ public class DaoImpl implements Dao {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(RealmEntry.class).equalTo("ms_time", CustomTimeUtils.trimmedCurrentTimestampLong()).findAll();
     }
+
+    @Override
+    public List<RealmEntry> getEntryListToUpload() {
+        Realm realm = Realm.getDefaultInstance();
+        List<RealmEntry> entries =  realm.where(RealmEntry.class).equalTo("isUploaded", false).findAll();
+        realm.executeTransaction(realm1 -> {
+            RealmResults<RealmEntry> entries1 = realm1.where(RealmEntry.class).equalTo("isUploaded", false).findAll();
+            entries1.setValue("isUploaded",true);
+        });
+        return entries;
+    }
+
+
+    //    @Override
+//    public List<RealmEntry> markUploadedEntryList(List<Long> uploadedEntries) {
+//        Realm realm = Realm.getDefaultInstance();
+//        //RealmResults<Person> persons = realm.where(Person.class).equalTo("invited", false).findAll();
+//        return realm.where(RealmEntry.class).equalTo("isUploaded", false).findAll();
+//    }
 }

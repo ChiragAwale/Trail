@@ -9,11 +9,19 @@ import android.os.Bundle;
 
 import com.chiragawale.trail.bluetooth.BluetoothUtility;
 import com.chiragawale.trail.ui.main.AdminView;
+import com.chiragawale.trail.worker.UploadWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.ViewPager;
+import androidx.work.BackoffPolicy;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.util.Log;
 import android.view.Menu;
@@ -21,13 +29,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.chiragawale.trail.ui.main.SectionsPagerAdapter;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     public static final String MESSAGE_STATUS = "message_status";
-
+    private OneTimeWorkRequest uploadWork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +78,22 @@ public class MainActivity extends BaseActivity {
                 builder.show();
             }
         }
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build();
+        //        PeriodicWorkRequest uploadWork = new PeriodicWorkRequest.Builder(UploadWorker.class,2,TimeUnit.HOURS)
+//                .setConstraints(constraints)
+//                .setBackoffCriteria(
+//                        BackoffPolicy.LINEAR,
+//                        OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+//                        TimeUnit.MILLISECONDS)
+//                .addTag("Upload data")
+//                .build();
+        uploadWork = new OneTimeWorkRequest.Builder(UploadWorker.class)
+                .setConstraints(constraints)
+                .addTag("Upload data")
+                .build();
     }
 
     @Override
@@ -95,6 +122,16 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    public void uploadToServer(){
+        WorkManager.getInstance(getApplicationContext()).enqueue(uploadWork);
+//        WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(uploadWork.getId()).observe(this, workInfo -> {
+//            if (workInfo != null) {
+//                WorkInfo.State state = workInfo.getState();
+//                Log.e("WORKER", state.toString());
+//                Toast.makeText(getApplicationContext(),state.toString(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,6 +146,9 @@ public class MainActivity extends BaseActivity {
             case R.id.m_admin_view:
                 Intent intent = new Intent(this, AdminView.class);
                 startActivity(intent);
+                return true;
+            case R.id.m_upload_data:
+                uploadToServer();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

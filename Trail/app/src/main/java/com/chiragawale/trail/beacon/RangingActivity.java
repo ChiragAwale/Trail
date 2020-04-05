@@ -50,7 +50,7 @@ public class RangingActivity extends BaseActivity
 //                    Log.e(TAG, "The first beacon I see is about "+beacon.getBluetoothAddress() + " " + beacons.iterator().next().getDistance()+" meters away.")
                     Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
                     Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
-                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimeStamp(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
+                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimestampLong(),"","beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
                     dao.addEntry(entry);
                 }
             }
