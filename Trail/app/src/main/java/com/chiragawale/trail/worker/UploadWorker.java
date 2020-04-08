@@ -32,7 +32,7 @@ public class UploadWorker extends Worker {
     Dao dao;
     List<RealmEntry> realmEntries;
     private static final String WORK_RESULT = "work_result";
-
+    private final String API_URL = "https://drt-trail-app.herokuapp.com/api/entryss_many/";
     public UploadWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
@@ -49,7 +49,7 @@ public class UploadWorker extends Worker {
         realmEntries = dao.getEntryListToUpload();
         if(!realmEntries.isEmpty()) {
             try {
-                url = new URL("https://trail34.herokuapp.com/entrys/post");
+                url = new URL(API_URL);
             } catch (MalformedURLException e) {
                 Log.e("Upload Worker", e.getMessage());
                 e.printStackTrace();
