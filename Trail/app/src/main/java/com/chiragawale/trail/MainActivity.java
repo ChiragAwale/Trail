@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.chiragawale.trail.bluetooth.BluetoothUtility;
 import com.chiragawale.trail.ui.main.AdminView;
 import com.chiragawale.trail.worker.UploadWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,15 +50,6 @@ public class MainActivity extends BaseActivity {
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Intent intent = new Intent(MainActivity.this, BluetoothUtility.class);
-                startActivity(intent);
-            }
-        });
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

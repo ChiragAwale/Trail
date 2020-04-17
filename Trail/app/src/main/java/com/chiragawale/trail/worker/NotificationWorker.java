@@ -182,8 +182,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
-        beaconManager.getBeaconParsers().add(new BeaconParser().
-                setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17"));
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17"));
         Log.e(TAG, "Oncreate reached");
         beaconManager.bind(this);
 
