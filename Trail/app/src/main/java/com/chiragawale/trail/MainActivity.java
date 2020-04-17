@@ -133,10 +133,6 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.m_admin_view:
-                Intent intent = new Intent(this, AdminView.class);
-                startActivity(intent);
-                return true;
             case R.id.m_upload_data:
                 uploadToServer();
                 return true;
