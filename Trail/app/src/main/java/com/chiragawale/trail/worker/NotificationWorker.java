@@ -79,10 +79,10 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "All set");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
-        for(int i = 0; i < 1;i ++) {
+        for(int i = 0; i < 2;i ++) {
             processWork();
             try {
-                Thread.sleep(130000);
+                Thread.sleep(140000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Log.e(TAG,e.getMessage() + " ");
@@ -137,7 +137,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                 .build();
         // Change the layout below for other beacon types
         BeaconParser beaconParser = new BeaconParser()
-                .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
+                .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17");
         beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
         beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
 
@@ -167,7 +167,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
 
         dao.addMap(hmap);
         Log.e(TAG,"MAP Added stoped ranging " + hmap.size());
-        Toast.makeText(getApplicationContext(),"MAP ADDED STOPPED RANGIN "+ hmap.size(),Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"MAP ADDED STOPPED RANGING "+ hmap.size(),Toast.LENGTH_LONG).show();
     }
 
     public void rangerStart(){
@@ -182,8 +182,8 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
-        // beaconManager.getBeaconParsers().add(new BeaconParser().
-        //        setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().
+                setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17"));
         Log.e(TAG, "Oncreate reached");
         beaconManager.bind(this);
 
