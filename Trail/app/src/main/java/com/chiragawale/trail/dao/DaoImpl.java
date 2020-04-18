@@ -30,6 +30,7 @@ public class DaoImpl implements Dao {
         e.setRssi(realmEntry.getRssi());
         e.setMs_time(realmEntry.getMs_time());
         e.setUploaded(false);
+        e.setUsername(realmEntry.getUsername());
         realm.commitTransaction();
         } finally {
             realm.close();

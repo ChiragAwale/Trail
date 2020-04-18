@@ -25,6 +25,7 @@ import androidx.work.WorkerParameters;
 
 import com.chiragawale.trail.MainActivity;
 import com.chiragawale.trail.R;
+import com.chiragawale.trail.SaveSharedPreference;
 import com.chiragawale.trail.dao.Dao;
 import com.chiragawale.trail.dao.DaoImpl;
 import com.chiragawale.trail.models.RealmEntry;
@@ -79,15 +80,16 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
         showNotification("WorkManager", taskDataString != null ? taskDataString : "All set");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
-        for(int i = 0; i < 2;i ++) {
+
+        processWork();
+        try {
+            Thread.sleep(140000);
             processWork();
-            try {
-                Thread.sleep(140000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Log.e(TAG,e.getMessage() + " ");
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.e(TAG,e.getMessage() + " ");
         }
+
         Log.e(TAG,"END WORK");
         return Result.success(outputData);
     }
@@ -201,7 +203,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
 //                    Log.e(TAG, "The first beacon I see is about "+beacon.getBluetoothAddress() + " " + beacons.iterator().next().getDistance()+" meters away.")
                     Log.e(TAG, "BAddress " + beacon.getBluetoothAddress() + " Bname " + beacon.getBluetoothName() );
                     Log.e(TAG, "Distance " + beacon.getDistance() + " idfer " + beacon.getIdentifier(1));
-                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimestampLong(),mlocation,"beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong());
+                    RealmEntry entry = new RealmEntry("tName", CustomTimeUtils.currentTimestampLong(),mlocation,"beacon",beacon.getBluetoothAddress(),beacon.getDistance(),beacon.getRssi(),CustomTimeUtils.trimmedCurrentTimestampLong(), SaveSharedPreference.getUserName(getApplicationContext()));
                     hmap.put(beacon.getBluetoothAddress(),entry);
                 }
             }

@@ -14,7 +14,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 public class RealmEntry extends RealmObject {
-    private String name,macAddress,location, type, bluetoothAddress;
+    private String name,macAddress,location, type, bluetoothAddress, username;
     private int rssi;
     private double distance;
     private long ms_time,time;
@@ -31,13 +31,21 @@ public class RealmEntry extends RealmObject {
         isUploaded = uploaded;
     }
 
-    public static JsonObject serializeEntry(RealmEntry realmEntry, Context context) {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public static JsonObject serializeEntry(RealmEntry realmEntry) {
         JsonObject object = new JsonObject();
         object.addProperty("location", realmEntry.getLocation());
         object.addProperty("type", realmEntry.getType());
         object.addProperty("bluetooth_address", realmEntry.getBluetoothAddress());
         object.addProperty("time", realmEntry.getTime());
-        object.addProperty("username", SaveSharedPreference.getUserName(context));
+        object.addProperty("username", realmEntry.getUsername());
         object.addProperty("app_key", "app key 0011");
         object.addProperty("ms_time", realmEntry.getMs_time());
         object.addProperty("distance", realmEntry.getDistance());
@@ -45,7 +53,7 @@ public class RealmEntry extends RealmObject {
         return object;
     }
 
-    public RealmEntry(String name, long time, String location, String type, String bluetoothAddress, double distance, int rssi, long ms_time) {
+    public RealmEntry(String name, long time, String location, String type, String bluetoothAddress, double distance, int rssi, long ms_time, String username) {
         this.name = name;
         this.time = time;
         this.location = location;
@@ -55,6 +63,7 @@ public class RealmEntry extends RealmObject {
         this.rssi = rssi;
         this.ms_time = ms_time;
         this.isUploaded = false;
+        this.username = username;
     }
 
     public long getMs_time() {

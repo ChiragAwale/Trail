@@ -23,7 +23,6 @@ public class SaveSharedPreference
     public static String getUserName(Context ctx)
     {
         String username = getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
-        Log.e("ISERNAE", username);
         return username;
     }
 

@@ -65,10 +65,10 @@ public class UploadWorker extends Worker {
                 Writer writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
                 String json = "[";
                 for (int i = 0; i < realmEntries.size() - 1; i++) {
-                    json += gson.toJson(RealmEntry.serializeEntry(realmEntries.get(i),getApplicationContext())) + ",";
+                    json += gson.toJson(RealmEntry.serializeEntry(realmEntries.get(i))) + ",";
                     //   uploadedEntries.add(realmEntry.getEntryId());
                 }
-                json += gson.toJson(RealmEntry.serializeEntry(realmEntries.get(realmEntries.size() - 1),getApplicationContext())) + "]";
+                json += gson.toJson(RealmEntry.serializeEntry(realmEntries.get(realmEntries.size() - 1))) + "]";
                 writer.write(json);
                 writer.flush();
                 Log.e("STATUS", String.valueOf(conn.getResponseCode()));
