@@ -1,8 +1,11 @@
 package com.chiragawale.trail.models;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.chiragawale.trail.SaveSharedPreference;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -28,13 +31,13 @@ public class RealmEntry extends RealmObject {
         isUploaded = uploaded;
     }
 
-    public static JsonObject serializeEntry(RealmEntry realmEntry) {
+    public static JsonObject serializeEntry(RealmEntry realmEntry, Context context) {
         JsonObject object = new JsonObject();
         object.addProperty("location", realmEntry.getLocation());
         object.addProperty("type", realmEntry.getType());
         object.addProperty("bluetooth_address", realmEntry.getBluetoothAddress());
         object.addProperty("time", realmEntry.getTime());
-        object.addProperty("username", "User name");
+        object.addProperty("username", SaveSharedPreference.getUserName(context));
         object.addProperty("app_key", "app key 0011");
         object.addProperty("ms_time", realmEntry.getMs_time());
         object.addProperty("distance", realmEntry.getDistance());

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.chiragawale.trail.MainActivity;
 import com.chiragawale.trail.R;
+import com.chiragawale.trail.SaveSharedPreference;
 import com.chiragawale.trail.ui.login.LoginViewModel;
 import com.chiragawale.trail.ui.login.LoginViewModelFactory;
 
@@ -124,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
+        SaveSharedPreference.setUserName(getApplicationContext(),model.getDisplayName());
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

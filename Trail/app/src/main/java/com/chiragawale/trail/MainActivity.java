@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.chiragawale.trail.data.LoginRepository;
+import com.chiragawale.trail.ui.login.LoginActivity;
 import com.chiragawale.trail.ui.main.AdminView;
 import com.chiragawale.trail.worker.UploadWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,6 +44,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(SaveSharedPreference.getUserName(MainActivity.this).length() == 0)
+        {
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -133,6 +140,9 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.m_logout:
+                SaveSharedPreference.clearUserName(MainActivity.this);
+                finish();
             case R.id.m_upload_data:
                 uploadToServer();
                 return true;
