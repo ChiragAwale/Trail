@@ -20,7 +20,7 @@ public class AdminView extends BaseActivity {
         setContentView(R.layout.admin_view_layout);
         recyclerView = findViewById(R.id.rv_history);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new TrailRecyclerViewAdapter(dao.getEntryList());
+        adapter = new TrailRecyclerViewAdapter(dao.getEntryList(getApplicationContext()));
         recyclerView.setAdapter(adapter);
     }
 }

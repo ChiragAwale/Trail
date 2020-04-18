@@ -46,8 +46,8 @@ public class Trail extends Fragment {
         btnSend = view.findViewById(R.id.btnStart);
         tv_total = view.findViewById(R.id.tv_total);
         tv_today = view.findViewById(R.id.tv_today);
-        tv_total.setText(dao.getEntryList().size() + "");
-        tv_today.setText(dao.getEntryListToday().size() + "");
+        tv_total.setText(dao.getEntryList(getContext()).size() + "");
+        tv_today.setText(dao.getEntryListToday(getContext()).size() + "");
         ImageView iv_loading = view.findViewById(R.id.iv_loading);
         YoYo.with(Techniques.FadeIn)
                 .repeat(2)
@@ -81,8 +81,8 @@ public class Trail extends Fragment {
                     btnSend.setEnabled(true);
                     btnSend.setAlpha(1f);
                     iv_loading.setVisibility(View.GONE);
-                    tv_total.setText(dao.getEntryList().size() + "");
-                    tv_today.setText(dao.getEntryListToday().size() + "");
+                    tv_total.setText(dao.getEntryList(getContext()).size() + "");
+                    tv_today.setText(dao.getEntryListToday(getContext()).size() + "");
                 }
                 Toast.makeText(getContext(),state.toString(),Toast.LENGTH_SHORT).show();
             }

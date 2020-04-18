@@ -46,7 +46,7 @@ public class UploadWorker extends Worker {
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
         URL url = null;
         //List<Long> uploadedEntries = new ArrayList<>();
-        realmEntries = dao.getEntryListToUpload();
+        realmEntries = dao.getEntryListToUpload(getApplicationContext());
         if(!realmEntries.isEmpty()) {
             try {
                 url = new URL(API_URL);
@@ -75,7 +75,7 @@ public class UploadWorker extends Worker {
                 Log.e("MSG", conn.getResponseMessage());
                 writer.close();
                 conn.disconnect();
-                dao.markUploadedEntryList();
+                dao.markUploadedEntryList(getApplicationContext());
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e("UW", e.getMessage());
