@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.chiragawale.trail.R;
-import com.chiragawale.trail.bluetooth.BluetoothUtility;
+
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

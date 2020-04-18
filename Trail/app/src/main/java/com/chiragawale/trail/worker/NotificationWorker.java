@@ -137,7 +137,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                 .build();
         // Change the layout below for other beacon types
         BeaconParser beaconParser = new BeaconParser()
-                .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17");
+                .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
         beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
         beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
 
@@ -182,8 +182,7 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         beaconManager = BeaconManager.getInstanceForApplication(getApplicationContext());
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
-        beaconManager.getBeaconParsers().add(new BeaconParser().
-                setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17"));
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17"));
         Log.e(TAG, "Oncreate reached");
         beaconManager.bind(this);
 
