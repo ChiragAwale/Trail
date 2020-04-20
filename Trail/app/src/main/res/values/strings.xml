@@ -3,7 +3,7 @@
     <string name="tab_text_1">Beacon</string>
     <string name="tab_text_2">Google Nearby</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_register">Register</string>
