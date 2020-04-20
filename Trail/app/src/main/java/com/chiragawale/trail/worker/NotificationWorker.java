@@ -77,13 +77,11 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
     @Override
     public Result doWork() {
         Data taskData = getInputData();
-        String taskDataString = taskData.getString(MainActivity.MESSAGE_STATUS);
-        showNotification("WorkManager", taskDataString != null ? taskDataString : "All set");
         Data outputData = new Data.Builder().putString(WORK_RESULT, "Jobs Finished").build();
 
         processWork();
         try {
-            Thread.sleep(140000);
+            Thread.sleep(300000);
             processWork();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -108,25 +106,26 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
                         stopTransmit();
                         Log.e("worker", "Paused transmitting ");
                     }
-                }, 60000);
+                }, 120000);
             }
-        }, 60000);
+        }, 120000);
     }
-    private void showNotification(String task, String desc) {
-        NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        String channelId = "task_channel";
-        String channelName = "task_name";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new
-                    NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
-            manager.createNotificationChannel(channel);
-        }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setContentTitle(task)
-                .setContentText(desc)
-                .setSmallIcon(R.mipmap.ic_launcher);
-        manager.notify(1, builder.build());
-    }
+
+//    private void showNotification(String task, String desc) {
+//        NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//        String channelId = "task_channel";
+//        String channelName = "task_name";
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new
+//                    NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+//            manager.createNotificationChannel(channel);
+//        }
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
+//                .setContentTitle(task)
+//                .setContentText(desc)
+//                .setSmallIcon(R.mipmap.ic_launcher);
+//        manager.notify(1, builder.build());
+//    }
 
     private void transmit(){
         Beacon beacon = new Beacon.Builder()

@@ -3,7 +3,9 @@ package com.chiragawale.trail.ui.main;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -24,6 +26,9 @@ import com.chiragawale.trail.models.RealmEntry;
 import com.chiragawale.trail.worker.NotificationWorker;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A fragment representing a list of Items.
@@ -62,29 +67,35 @@ public class Trail extends Fragment {
                 .duration(1000)
                 .playOn(iv_loading);
 
-        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
+        btnSend.setVisibility(View.VISIBLE);
+
+        PeriodicWorkRequest mRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class,15, TimeUnit.MINUTES)
                 .addTag("RangeAndTransmit")
                 .build();
         final WorkManager mWorkManager = WorkManager.getInstance(getContext());
         btnSend.setOnClickListener(v ->{
-            mWorkManager.enqueue(mRequest);
-            btnSend.setEnabled(false);
+            mWorkManager.enqueueUniquePeriodicWork("RangeAndTransmit", ExistingPeriodicWorkPolicy.KEEP,mRequest);
+            btnSend.setVisibility(View.GONE);
             btnSend.setAlpha(0.4f);
             iv_loading.setVisibility(View.VISIBLE);
         });
 
-        mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(this, workInfo -> {
-            if (workInfo != null) {
-                WorkInfo.State state = workInfo.getState();
-                Log.e("WORKER", state.toString());
-                if(state.toString().equalsIgnoreCase("SUCCEEDED")){
-                    btnSend.setEnabled(true);
-                    btnSend.setAlpha(1f);
-                    iv_loading.setVisibility(View.GONE);
-                    tv_total.setText(dao.getEntryList(getContext()).size() + "");
-                    tv_today.setText(dao.getEntryListToday(getContext()).size() + "");
+        mWorkManager.getWorkInfosByTagLiveData("RangeAndTransmit").observe(this, workInfos -> {
+            if (workInfos != null) {
+
+                for(WorkInfo workInfo : workInfos) {
+                    WorkInfo.State state = workInfo.getState();
+                    Log.e("WORKER1", state.toString());
+                    btnSend.setVisibility(View.GONE);
+                    if (state.toString().equalsIgnoreCase("SUCCEEDED")) {
+                        btnSend.setEnabled(true);
+                        btnSend.setAlpha(1f);
+                        iv_loading.setVisibility(View.GONE);
+                        tv_total.setText(dao.getEntryList(getContext()).size() + "");
+                        tv_today.setText(dao.getEntryListToday(getContext()).size() + "");
+                    }
+                    Toast.makeText(getContext(), state.toString(), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(),state.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
