@@ -55,15 +55,13 @@ public class Trail extends Fragment {
         tv_today.setText(dao.getEntryListToday(getContext()).size() + "");
         Button btnStop = view.findViewById(R.id.btnStop);
         ImageView iv_loading = view.findViewById(R.id.iv_loading);
-        YoYo.with(Techniques.FadeIn)
-                .repeat(2)
+        YoYo.with(Techniques.ZoomIn)
                 .duration(800)
                 .playOn(tv_today);
-        YoYo.with(Techniques.FadeIn)
-                .repeat(2)
+        YoYo.with(Techniques.ZoomIn)
                 .duration(800)
                 .playOn(tv_total);
-        YoYo.with(Techniques.FadeOut)
+        YoYo.with(Techniques.ZoomIn)
                 .repeat(Animation.INFINITE)
                 .duration(1000)
                 .playOn(iv_loading);
@@ -111,6 +109,7 @@ public class Trail extends Fragment {
             Log.e("Trail","Cancelled All work");
             btnSend.setVisibility(View.VISIBLE);
             btnSend.setEnabled(true);
+            btnSend.setAlpha(1f);
             iv_loading.setVisibility(View.GONE);
         });
 
