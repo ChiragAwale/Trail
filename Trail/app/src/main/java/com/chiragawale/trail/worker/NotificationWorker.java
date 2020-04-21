@@ -63,13 +63,10 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
         super(context, workerParams);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            // Logic to handle location object
-                            mlocation = "Lat:"+ location.getLatitude() + "Long:" + location.getLongitude();
-                        }
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        // Logic to handle location object
+                        mlocation = "Lat:"+ location.getLatitude() + "Long:" + location.getLongitude();
                     }
                 });
     }
@@ -94,20 +91,14 @@ public class NotificationWorker extends Worker implements BeaconConsumer {
 
     public void processWork(){
         rangerStart();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stopRanging();
-                Log.e("worker", "Paused ranging ");
-                transmit();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        stopTransmit();
-                        Log.e("worker", "Paused transmitting ");
-                    }
-                }, 120000);
-            }
+        handler.postDelayed(() -> {
+            stopRanging();
+            Log.e("worker", "Paused ranging ");
+            transmit();
+            handler.postDelayed(() -> {
+                stopTransmit();
+                Log.e("worker", "Paused transmitting ");
+            }, 120000);
         }, 120000);
     }
 

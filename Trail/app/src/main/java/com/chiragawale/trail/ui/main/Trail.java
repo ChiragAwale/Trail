@@ -103,18 +103,15 @@ public class Trail extends Fragment {
             }
         });
 
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("Trail","Cancelling All work");
+        btnStop.setOnClickListener(v -> {
+            Log.e("Trail","Cancelling All work");
 
-                mWorkManager.cancelAllWorkByTag("RangeAndTransmit");
-                mWorkManager.cancelAllWorkByTag("RangeAndTransmit");
-                Log.e("Trail","Cancelled All work");
-                btnSend.setVisibility(View.VISIBLE);
-                btnSend.setEnabled(true);
-                iv_loading.setVisibility(View.GONE);
-            }
+            mWorkManager.cancelAllWorkByTag("RangeAndTransmit");
+            mWorkManager.cancelAllWorkByTag("RangeAndTransmit");
+            Log.e("Trail","Cancelled All work");
+            btnSend.setVisibility(View.VISIBLE);
+            btnSend.setEnabled(true);
+            iv_loading.setVisibility(View.GONE);
         });
 
         return view;
