@@ -1,3 +1,7 @@
+[![Node.js version][nodejs-badge]][nodejs]
+[![MIT][license-badge]][license]
+[![Build Status - GitHub Actions][gha-badge]][gha-ci]
+
 ## Inspiration
 COVID-19 has been spreading immensely, even though measures have been put in place to reduce the spread. If only there was a way to know who a person just tested positive has been in contact with recently, the government/care providers could provide even preventive/ special care and help them take precautions.
 
