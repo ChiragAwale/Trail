@@ -53,6 +53,7 @@ public class Trail extends Fragment {
         tv_today = view.findViewById(R.id.tv_today);
         tv_total.setText(dao.getEntryList(getContext()).size() + "");
         tv_today.setText(dao.getEntryListToday(getContext()).size() + "");
+        Button btnStop = view.findViewById(R.id.btnStop);
         ImageView iv_loading = view.findViewById(R.id.iv_loading);
         YoYo.with(Techniques.FadeIn)
                 .repeat(2)
@@ -86,7 +87,10 @@ public class Trail extends Fragment {
                 for(WorkInfo workInfo : workInfos) {
                     WorkInfo.State state = workInfo.getState();
                     Log.e("WORKER1", state.toString());
-                    btnSend.setVisibility(View.GONE);
+                    if (state.toString().equalsIgnoreCase("ENQUEUED") || state.toString().equalsIgnoreCase("RUNNING")) {
+                        btnSend.setVisibility(View.GONE);
+                        iv_loading.setVisibility(View.VISIBLE);
+                    }
                     if (state.toString().equalsIgnoreCase("SUCCEEDED")) {
                         btnSend.setEnabled(true);
                         btnSend.setAlpha(1f);
@@ -96,6 +100,20 @@ public class Trail extends Fragment {
                     }
                     Toast.makeText(getContext(), state.toString(), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Trail","Cancelling All work");
+
+                mWorkManager.cancelAllWorkByTag("RangeAndTransmit");
+                mWorkManager.cancelAllWorkByTag("RangeAndTransmit");
+                Log.e("Trail","Cancelled All work");
+                btnSend.setVisibility(View.VISIBLE);
+                btnSend.setEnabled(true);
+                iv_loading.setVisibility(View.GONE);
             }
         });
 

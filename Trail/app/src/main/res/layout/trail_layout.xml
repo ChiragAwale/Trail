@@ -85,6 +85,24 @@
         android:textAllCaps="false"
         android:textColor="#fff" />
 
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/btnStart"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Stop"
+        android:textAllCaps="false"
+        android:textColor="#fff" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
